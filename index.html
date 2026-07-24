@@ -1675,6 +1675,253 @@
       }
     }
 
+    /* ─── CONTENT-LED COMPOSITION ─── */
+    .agency-split {
+      grid-column: 3 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin: clamp(56px, 8vw, 112px) 0;
+      border-top: 1px solid var(--ink);
+      border-bottom: 1px solid var(--ink);
+    }
+    .agency-split__side {
+      min-height: clamp(340px, 38vw, 560px);
+      padding: clamp(26px, 4vw, 56px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .agency-split__side + .agency-split__side { border-left: 1px solid var(--ink); }
+    .agency-split__side--moral {
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .agency-split__index,
+    .verdict__label,
+    .role-map__label,
+    .defence-test__kicker,
+    .authorship__label {
+      font: 600 10px/1.2 var(--sans);
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    .agency-split__title {
+      max-width: 8ch;
+      font: 500 clamp(40px, 5.8vw, 82px)/.9 var(--serif);
+      letter-spacing: -.055em;
+    }
+    .agency-split__side p {
+      max-width: 34ch;
+      margin: 0;
+      font-size: clamp(15px, 1.3vw, 18px);
+      line-height: 1.6;
+    }
+    .dilemma {
+      grid-column: 2 / -1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      margin: clamp(40px, 6vw, 84px) 0 0;
+      border-top: 4px solid var(--accent);
+    }
+    .dilemma__item { padding: 28px clamp(20px, 3vw, 42px) 38px 0; }
+    .dilemma__item + .dilemma__item {
+      padding-left: clamp(20px, 3vw, 42px);
+      border-left: 1px solid var(--ink);
+    }
+    .dilemma__item span {
+      display: block;
+      margin-bottom: 18px;
+      color: var(--accent);
+      font: 600 10px/1.2 var(--sans);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+    .dilemma__item p {
+      margin: 0;
+      font: 400 clamp(20px, 2.2vw, 31px)/1.3 var(--serif);
+    }
+    .verdict {
+      grid-column: 3 / -1;
+      display: grid;
+      grid-template-columns: 2fr 5fr;
+      gap: clamp(20px, 3vw, 48px);
+      margin: 40px 0 clamp(80px, 11vw, 150px);
+      padding: 18px 0 0;
+      border-top: 4px solid var(--accent);
+    }
+    .verdict__text {
+      max-width: 44ch;
+      font: 400 clamp(22px, 2.6vw, 38px)/1.25 var(--serif);
+    }
+    .verdict--conditional {
+      grid-column: 2 / 11;
+      grid-template-columns: 1fr;
+      padding: clamp(28px, 4vw, 52px);
+      background: var(--accent);
+      border: 0;
+      color: white;
+    }
+    .verdict--practice {
+      grid-column: 5 / -1;
+      border-color: var(--ink);
+    }
+    .role-map {
+      grid-column: 2 / -1;
+      margin: clamp(70px, 10vw, 140px) 0;
+      border-top: 4px solid var(--ink);
+    }
+    .role-map__head,
+    .role-map__row {
+      display: grid;
+      grid-template-columns: 1.1fr 1.45fr 1.6fr;
+      gap: 0;
+      border-bottom: 1px solid var(--ink);
+    }
+    .role-map__head > *,
+    .role-map__row > * { padding: 18px clamp(12px, 2vw, 30px); }
+    .role-map__head > *:first-child,
+    .role-map__row > *:first-child { padding-left: 0; }
+    .role-map__head > * + *,
+    .role-map__row > * + * { border-left: 1px solid var(--ink); }
+    .role-map__head {
+      color: var(--accent);
+      font: 600 10px/1.2 var(--sans);
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    .role-map__row strong {
+      font: 500 clamp(20px, 2vw, 29px)/1.15 var(--serif);
+    }
+    .role-map__row span {
+      font-size: clamp(14px, 1.2vw, 17px);
+      line-height: 1.5;
+    }
+    .defence-test {
+      margin: 0;
+      padding: clamp(90px, 13vw, 190px) clamp(20px, 3.5vw, 56px);
+      color: var(--bg);
+      background: var(--ink);
+    }
+    .defence-test__inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: clamp(10px, 1.4vw, 24px);
+    }
+    .defence-test__kicker { grid-column: 1 / 3; color: #ff6b5e; }
+    .defence-test h2 {
+      grid-column: 3 / -1;
+      max-width: 10ch;
+      color: var(--bg);
+      font: 500 clamp(58px, 9vw, 142px)/.86 var(--serif);
+      letter-spacing: -.07em;
+    }
+    .defence-test__premise {
+      grid-column: 7 / -1;
+      margin: clamp(36px, 5vw, 68px) 0;
+      color: var(--bg);
+      font: 400 clamp(21px, 2.2vw, 32px)/1.4 var(--serif);
+    }
+    .defence-test__questions {
+      grid-column: 3 / -1;
+      counter-reset: defence;
+      border-top: 1px solid rgba(242,241,236,.6);
+    }
+    .defence-test__question {
+      counter-increment: defence;
+      display: grid;
+      grid-template-columns: 1fr 6fr;
+      gap: 24px;
+      padding: clamp(22px, 3vw, 38px) 0;
+      border-bottom: 1px solid rgba(242,241,236,.6);
+      font: 400 clamp(24px, 3.1vw, 46px)/1.15 var(--serif);
+    }
+    .defence-test__question::before {
+      content: '0' counter(defence);
+      color: #ff6b5e;
+      font: 600 11px/1.4 var(--sans);
+    }
+    .authorship {
+      grid-column: 2 / -1;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      margin: clamp(70px, 10vw, 140px) 0;
+      border-block: 1px solid var(--ink);
+    }
+    .authorship__item {
+      min-height: 330px;
+      padding: 26px clamp(18px, 2.5vw, 38px);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .authorship__item + .authorship__item { border-left: 1px solid var(--ink); }
+    .authorship__item:nth-child(2) { background: var(--accent); color: white; }
+    .authorship__title {
+      font: 500 clamp(30px, 3.2vw, 48px)/1 var(--serif);
+      letter-spacing: -.04em;
+    }
+    .authorship__item p { margin: 0; font-size: 15px; line-height: 1.55; }
+    .final-statement {
+      grid-column: 3 / -1;
+      margin-top: clamp(60px, 9vw, 120px);
+      padding-top: 22px;
+      border-top: 6px solid var(--accent);
+      font: 500 clamp(36px, 5.5vw, 80px)/1 var(--serif);
+      letter-spacing: -.055em;
+    }
+    .final-statement em { color: var(--accent); font-weight: 400; }
+
+    @media (max-width: 768px) {
+      .agency-split,
+      .dilemma,
+      .authorship { grid-template-columns: 1fr; }
+      .agency-split,
+      .dilemma,
+      .verdict,
+      .verdict--conditional,
+      .verdict--practice,
+      .role-map,
+      .authorship,
+      .final-statement { grid-column: 1 / -1; }
+      .agency-split__side { min-height: 390px; }
+      .agency-split__side + .agency-split__side,
+      .dilemma__item + .dilemma__item,
+      .authorship__item + .authorship__item {
+        border-left: 0;
+        border-top: 1px solid var(--ink);
+      }
+      .dilemma__item + .dilemma__item { padding-left: 0; }
+      .verdict { grid-template-columns: 1fr; }
+      .role-map__head { display: none; }
+      .role-map__row {
+        grid-template-columns: 1fr;
+        padding: 24px 0;
+      }
+      .role-map__row > * {
+        padding: 10px 0;
+        border-left: 0 !important;
+      }
+      .role-map__row span::before {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--accent);
+        font: 600 9px/1.2 var(--sans);
+        letter-spacing: .12em;
+        text-transform: uppercase;
+      }
+      .role-map__row span:nth-child(2)::before { content: 'Роль ИИ'; }
+      .role-map__row span:nth-child(3)::before { content: 'Ответственность человека'; }
+      .defence-test__kicker { grid-column: 1 / 3; }
+      .defence-test h2,
+      .defence-test__premise,
+      .defence-test__questions { grid-column: 1 / -1; }
+      .defence-test__premise { margin-left: 16.66%; }
+      .defence-test__question { grid-template-columns: 42px 1fr; }
+      .authorship__item { min-height: 280px; }
+    }
+
     /* ─── REDUCED MOTION ─── */
     @media (prefers-reduced-motion: reduce) {
       .reveal, .reveal-left, .reveal-right, .reveal-scale { opacity: 1; transform: none; }
@@ -1722,13 +1969,34 @@
     <h2 class="reveal">Нейросети научились писать тексты,<br>которые <em>выглядят</em> как мышление</h2>
 
     <p class="lead reveal">
-      Но сходство формы не означает сходства природы. Кейс «Нейросетевое затмение» ставит простой вопрос: если нейросеть сгенерировала философский аргумент — это всё ещё философия?
+      Но сходство формы не означает сходства природы. Нейросеть может построить аргумент. Достаточно ли этого, чтобы состоялось философствование?
     </p>
 
-    <div class="thesis reveal">
-      <div class="thesis__label">Ключевое различение</div>
-      <div class="thesis__text">
-        Нейросеть — технический агент. Она инициирует коммуникативные акты, но лишена моральной агентности: способности к автономному волеизъявлению, рефлексии и принятию ответственности.
+    <div class="agency-split reveal">
+      <div class="agency-split__side">
+        <span class="agency-split__index">01 / Действует</span>
+        <div class="agency-split__title">Технический агент</div>
+        <p>Продолжает фразу, сопоставляет позиции, строит аргумент и предлагает вывод.</p>
+      </div>
+      <div class="agency-split__side agency-split__side--moral">
+        <span class="agency-split__index">02 / Отвечает</span>
+        <div class="agency-split__title">Моральный субъект</div>
+        <p>Понимает, зачем говорит, пересматривает свои намерения и принимает последствия сказанного.</p>
+      </div>
+    </div>
+
+    <p class="lead reveal">
+      Нейросеть способна на первое, но не на второе. Поэтому действие ещё не делает её моральным субъектом.
+    </p>
+
+    <div class="dilemma reveal">
+      <div class="dilemma__item">
+        <span>Аргумент за инструмент</span>
+        <p>Философ всегда пользовался книгами, редакторами и чужими возражениями. Возможно, инструмент не меняет авторства.</p>
+      </div>
+      <div class="dilemma__item">
+        <span>Граница сомнения</span>
+        <p>Но если инструмент производит не формулировку, а сам ход рассуждения — где заканчивается помощь?</p>
       </div>
     </div>
   </div>
@@ -1741,7 +2009,7 @@
       Центр тяжести смещается на человека, который санкционирует использование ИИ и присваивает результаты. Философствование неотделимо от практики рефлексии и ответственного выбора.
     </p>
     <p style="color: var(--text-muted);">
-      Текст, сгенерированный нейросетью, при всей своей формальной корректности не может претендовать на статус философского результата — если человек не сохраняет контроль над концептуальной рамкой.
+      Нейросеть может произвести философский текст как форму. Философский результат появляется только там, где субъект понимает ход рассуждения, принимает его и способен отвечать на возражения.
     </p>
   </div>
   <div class="asym__viz">
@@ -1758,7 +2026,7 @@
 <div class="thinkers">
   <div class="thinkers__intro reveal">
     <div class="thinkers__kicker">Три оптики · один вопрос</div>
-    <p>Не «может ли машина написать», а кто отвечает за написанное.</p>
+    <p>Одно действие. Три разных способа вынести вердикт.</p>
   </div>
   <div class="thinkers__grid">
     <figure class="thinker reveal-left">
@@ -1800,28 +2068,19 @@
 
     <!-- 1.1 DEONTOLOGY -->
     <h3 class="reveal" style="margin-top: 64px;">Деонтология: честность как обязанность</h3>
-    <p class="reveal" style="color: var(--text-muted); font-size: 14px; margin-bottom: 32px;">Кант · Милль · Донат</p>
+    <p class="reveal" style="color: var(--text-muted); font-size: 14px; margin-bottom: 32px;">Иммануил Кант</p>
 
     <p class="reveal">
       Автор несёт безусловную обязанность интеллектуальной честности. Сокрытие использования ИИ — нарушение морального закона, запрещающего ложь.
     </p>
 
-    <div class="quote reveal">
-      <div class="quote__text">
-        «Способность людей держать данное слово составляет основу благополучия общества; недостаток этой добродетели может быть угрозой для самого существования нашей цивилизации»
-      </div>
-      <div class="quote__author">— Дж. С. Милль</div>
-    </div>
-
     <p class="reveal">
-      Делегирование нейросети ключевых этапов мышления — постановки проблемы, аргументации, выводов — лишает автора возможности исполнить моральный долг. Этот долг: самостоятельная ответственность за логику рассуждения.
+      Проблема возникает не в самом инструменте, а в ложном представлении происхождения мысли. Если автор выдаёт сгенерированное рассуждение за собственное, он использует доверие читателя как средство.
     </p>
 
-    <div class="thesis reveal">
-      <div class="thesis__label">Вывод</div>
-      <div class="thesis__text">
-        Сокрытие ИИ подрывает саму основу академической верификации. Автор, скрывающий участие нейросети, нарушает негласный контракт с читателем и рецензентом.
-      </div>
+    <div class="verdict reveal">
+      <div class="verdict__label">Вопрос Канта</div>
+      <div class="verdict__text">Могу ли я сделать скрытое делегирование всеобщим правилом — и сохранить смысл авторства?</div>
     </div>
 
     <!-- VISUAL PAUSE between subsections -->
@@ -1835,7 +2094,7 @@
     <p class="reveal" style="color: var(--text-muted); font-size: 14px; margin-bottom: 32px;">Милль</p>
 
     <p class="reveal">
-      ИИ может снизить когнитивный порог для черновиков, ускорить редактирование, повысить продуктивность. Но цена — снижение качества аргументации, усреднённые формулировки, эрозия доверия к публикациям.
+      Здесь нет запрета заранее. ИИ может снизить порог входа, ускорить редактирование и сделать философскую дискуссию доступнее. Но он же способен усреднить аргументацию и разрушить доверие к публикациям.
     </p>
 
     <div class="quote reveal">
@@ -1846,22 +2105,12 @@
     </div>
 
     <p class="reveal">
-      Краткосрочные выгоды от ускорения исследовательского цикла не компенсируют ущерб от системного обесценивания информации. Доверие — базовое условие функционирования академического института.
+      Вердикт зависит от последствий. Значительная автоматизация может быть оправдана, если она действительно повышает качество образования и дискуссии. Рост числа текстов сам по себе ещё не является пользой.
     </p>
 
-    <div class="thesis reveal">
-      <div class="thesis__label">Вывод</div>
-      <div class="thesis__text">
-        Неконтролируемое использование нейросетей неоправданно. Прирост числа работ при падении содержательной ценности — отрицательный баланс.
-      </div>
-    </div>
-
-    <!-- PULL QUOTE -->
-    <div class="pull-quote reveal">
-      <div class="pull-quote__inner">
-        Доверие — базовое условие функционирования академического института, и его разрушение ведёт к снижению общей общественной пользы
-      </div>
-      <div class="pull-quote__author">— из выводов утилитаристского анализа</div>
+    <div class="verdict verdict--conditional reveal">
+      <div class="verdict__label">Вопрос Милля</div>
+      <div class="verdict__text">Стало ли от этого больше содержательной пользы — для автора, читателя и самого философского дискурса?</div>
     </div>
 
     <!-- 1.3 VIRTUE ETHICS -->
@@ -1883,11 +2132,9 @@
       Благо заключается не во внешнем продукте, а в совершенствовании разумной деятельности. Если ключевые операции делегируются нейросети, автор лишается возможности упражнять добродетели.
     </p>
 
-    <div class="thesis reveal">
-      <div class="thesis__label">Вывод</div>
-      <div class="thesis__text">
-        Нейросеть допустима лишь как инструмент для технических задач. Центральные акты рефлексии, оценки и синтеза остаются проявлением агентности автора.
-      </div>
+    <div class="verdict verdict--practice reveal">
+      <div class="verdict__label">Вопрос Аристотеля</div>
+      <div class="verdict__text">Каким мыслителем делает меня эта практика — более рассудительным или более зависимым?</div>
     </div>
   </div>
 </section>
@@ -1907,10 +2154,10 @@
   </div>
   <div class="asym__text reveal-right">
     <p class="lead">
-      Деонтологический, утилитаристский и добродетельный подходы сходятся в требовании сохранять решающую роль человека как ответственного субъекта.
+      Три подхода не дают одного и того же ответа. Они проверяют поступок на трёх уровнях: правило, последствия и характер автора.
     </p>
     <p>
-      Даже при вспомогательном использовании нейросети автор обязан сохранять способность к рефлексии над содержанием и отвечать за выводы.
+      Их общий нерв — не происхождение каждого предложения, а способность человека понимать, принимать и защищать написанное.
     </p>
   </div>
 </div>
@@ -1952,6 +2199,34 @@
       </div>
     </div>
 
+    <div class="role-map reveal">
+      <div class="role-map__head">
+        <div>Этап</div>
+        <div>Допустимая роль ИИ</div>
+        <div>Ответственность человека</div>
+      </div>
+      <div class="role-map__row">
+        <strong>Проблема</strong>
+        <span>Предложить альтернативы и возражения</span>
+        <span>Выбрать вопрос и объяснить, почему он важен</span>
+      </div>
+      <div class="role-map__row">
+        <strong>Аргумент</strong>
+        <span>Проверить связность и скрытые допущения</span>
+        <span>Построить и принять ход рассуждения</span>
+      </div>
+      <div class="role-map__row">
+        <strong>Текст</strong>
+        <span>Редактировать и предлагать формулировки</span>
+        <span>Утвердить значение каждого тезиса</span>
+      </div>
+      <div class="role-map__row">
+        <strong>Публикация</strong>
+        <span>Зафиксировать техническую историю работы</span>
+        <span>Раскрыть метод и защитить выводы</span>
+      </div>
+    </div>
+
     <!-- CONDITIONS -->
     <h3 class="reveal" style="margin-top: 80px;">Условия публикации</h3>
 
@@ -1982,6 +2257,19 @@
     <p class="reveal">
       Нейросеть не может быть соавтором. У неё нет моральной ответственности, интенциональности, рефлексивного осознания утверждений.
     </p>
+  </div>
+</section>
+
+<section class="defence-test">
+  <div class="defence-test__inner">
+    <div class="defence-test__kicker reveal">Тест авторства</div>
+    <h2 class="reveal">Уберите текст.</h2>
+    <p class="defence-test__premise reveal">Если автор действительно прошёл путь мысли, он сможет построить аргумент заново — без готовой страницы перед глазами.</p>
+    <div class="defence-test__questions reveal">
+      <div class="defence-test__question">Почему выбран именно этот тезис?</div>
+      <div class="defence-test__question">Какое возражение против него сильнейшее?</div>
+      <div class="defence-test__question">Что заставило бы автора изменить позицию?</div>
+    </div>
   </div>
 </section>
 
@@ -2025,17 +2313,33 @@
     </div>
 
     <p class="reveal">
-      Без чётких критериев — порогового процента, обязательности раскрытия этапов — меры прозрачности теряют регулятивную силу.
+      Процент сгенерированного текста ничего не решает. Пять процентов могут содержать главный тезис, а восемьдесят — быть редактурой уже продуманной позиции. Важно раскрывать не объём, а функцию ИИ.
     </p>
 
     <h3 class="reveal" style="margin-top: 64px;">Проблема авторства</h3>
 
-    <p class="reveal">
-      Редакционные метки не решают проблему распределения ответственности. Машина — «среда, а не разум». Она не может быть субъектом авторства.
-    </p>
+    <p class="reveal">Чтобы не путать влияние машины с авторством, нужно различить три уровня.</p>
 
-    <p class="reveal">
-      Но традиционные концепции авторства, предполагающие единичного мыслящего субъекта, не способны описать ситуацию, где значительная часть работы делегирована алгоритму.
+    <div class="authorship reveal">
+      <div class="authorship__item">
+        <span class="authorship__label">01</span>
+        <div class="authorship__title">Причинный вклад</div>
+        <p>Нейросеть повлияла на формулировки, структуру или направление текста.</p>
+      </div>
+      <div class="authorship__item">
+        <span class="authorship__label">02</span>
+        <div class="authorship__title">Авторство</div>
+        <p>Субъект понимает написанное и намеренно утверждает именно это.</p>
+      </div>
+      <div class="authorship__item">
+        <span class="authorship__label">03</span>
+        <div class="authorship__title">Ответственность</div>
+        <p>Человек принимает решение опубликовать текст и отвечает за последствия.</p>
+      </div>
+    </div>
+
+    <p class="lead reveal">
+      У нейросети может быть большой причинный вклад и при этом не быть авторства. Авторство определяется не числом предложений, а способностью осознанно утверждать написанное.
     </p>
 
     <!-- ARCHIVE DETAIL -->
@@ -2086,7 +2390,7 @@
 
 <!-- ═══════════════════ EMPHASIS 2 ═══════════════════ -->
 <div class="emphasis reveal">
-  ИИ должен оставаться инструментом,<br>расширяющим возможности исследователя,<br>но <em>не подменяющим</em> его собственное мышление
+  Опасность начинается не тогда,<br>когда машина учится философствовать.<br>А когда человеку достаточно текста,<br><em>похожего на мысль</em>
 </div>
 
 <!-- ═══════════════════ FINAL IMAGE ═══════════════════ -->
@@ -2106,12 +2410,16 @@
     <h2 class="reveal">Граница проходит<br>по линии <em>контроля</em></h2>
 
     <p class="lead reveal">
-      Три подхода — деонтология, утилитаризм, этика добродетели — сходятся в одном: человек остаётся решающим субъектом. Даже при вспомогательном использовании нейросети автор обязан сохранять рефлексию и отвечать за выводы.
+      Машина может построить аргумент. Но она не ставит на него ничего своего: ни убеждения, ни репутацию, ни возможность ошибиться.
     </p>
 
     <p class="reveal">
-      Граница между философским текстом и его имитацией проходит не по степени технологического вмешательства, а по линии интенционального контроля.
+      Поэтому вопрос об ИИ в философии — не вопрос происхождения предложений. Это вопрос о том, существует ли за ними субъект, способный сказать: «Я понимаю, почему это утверждаю, и готов за это отвечать».
     </p>
+
+    <div class="final-statement reveal">
+      Текст становится философским результатом там, где за ним остаётся <em>тот, кто может ответить.</em>
+    </div>
   </div>
 </section>
 
