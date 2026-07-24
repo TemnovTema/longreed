@@ -6,23 +6,26 @@
   <title>Нейросетевое затмение — Философия и ИИ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,500;0,7..72,600;1,7..72,400;1,7..72,500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg: #0a0a0b;
-      --bg-elevated: #111113;
-      --bg-card: #18181b;
-      --text-primary: #e8e6e3;
-      --text-secondary: #9a9590;
-      --text-muted: #5c5854;
-      --accent: #c9a96e;
-      --accent-dim: rgba(201, 169, 110, 0.12);
-      --accent-glow: rgba(201, 169, 110, 0.25);
-      --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --max-w: 720px;
+      --bg: #e7dfd0;
+      --bg-elevated: #d8cebc;
+      --bg-card: #17211f;
+      --text-primary: #18201d;
+      --text-secondary: #454a43;
+      --text-muted: #777466;
+      --accent: #376c64;
+      --accent-dim: rgba(55, 108, 100, 0.12);
+      --accent-glow: rgba(55, 108, 100, 0.24);
+      --bronze: #8b6b42;
+      --paper: #f0e9dc;
+      --ink: #18201d;
+      --serif: 'Literata', Georgia, 'Times New Roman', serif;
+      --sans: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
+      --max-w: 780px;
       --section-gap: clamp(120px, 18vw, 220px);
     }
 
@@ -51,7 +54,8 @@
       inset: 0;
       z-index: 100;
       pointer-events: none;
-      opacity: 0.035;
+      opacity: 0.065;
+      mix-blend-mode: multiply;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
       background-repeat: repeat;
       background-size: 200px;
@@ -752,6 +756,334 @@
       .viz--tall { min-height: 50dvh; }
     }
 
+    /* ─── NEOCLASSICAL EDITORIAL DIRECTION ─── */
+    body {
+      background:
+        radial-gradient(circle at 84% 5%, rgba(139, 107, 66, 0.16), transparent 24rem),
+        linear-gradient(90deg, transparent 0 7.9%, rgba(24,32,29,0.055) 8%, transparent 8.1% 91.9%, rgba(24,32,29,0.055) 92%, transparent 92.1%),
+        var(--bg);
+    }
+    .nav {
+      mix-blend-mode: normal;
+      color: var(--ink);
+      border-bottom: 1px solid rgba(24,32,29,0.13);
+      background: rgba(231,223,208,0.72);
+      backdrop-filter: blur(12px);
+    }
+    .nav__logo { color: var(--ink); }
+    .nav__dot {
+      border-radius: 0;
+      background: var(--accent);
+      transform: rotate(45deg);
+    }
+    .hero {
+      align-items: flex-start;
+      justify-content: flex-end;
+      text-align: left;
+      padding: 14rem clamp(24px, 7vw, 110px) clamp(88px, 10vw, 150px);
+      min-height: 100dvh;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: 'Λ';
+      position: absolute;
+      right: -0.08em;
+      top: -0.15em;
+      font-family: var(--serif);
+      font-size: min(78vw, 940px);
+      font-weight: 400;
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(55,108,100,0.17);
+      pointer-events: none;
+    }
+    .hero::after {
+      content: 'I  ·  АВТОР  /  МАШИНА  /  ОТВЕТСТВЕННОСТЬ';
+      position: absolute;
+      right: clamp(24px, 5vw, 80px);
+      bottom: 7rem;
+      writing-mode: vertical-rl;
+      font-size: 9px;
+      letter-spacing: .24em;
+      color: var(--text-muted);
+    }
+    .hero__eyebrow {
+      margin-bottom: clamp(28px, 4vw, 60px);
+      color: var(--accent);
+    }
+    .hero__title {
+      max-width: 1200px;
+      font-size: clamp(64px, 11.5vw, 182px);
+      font-weight: 500;
+      line-height: .78;
+      letter-spacing: -.07em;
+      text-wrap: balance;
+    }
+    .hero__title em {
+      display: block;
+      margin-left: clamp(1.2rem, 15vw, 15rem);
+      color: var(--accent);
+      font-weight: 400;
+      letter-spacing: -.055em;
+    }
+    .hero__subtitle {
+      margin-top: clamp(36px, 5vw, 72px);
+      margin-left: clamp(0px, 8vw, 130px);
+      max-width: 38ch;
+      color: var(--text-secondary);
+      font-size: clamp(18px, 2vw, 30px);
+    }
+    .hero__scroll { left: auto; right: 7vw; transform: none; }
+    .hero__scroll span { color: var(--text-muted); }
+    .image-scene--hero {
+      margin: 0 clamp(0px, 4vw, 64px);
+      min-height: min(82dvh, 920px);
+      border: 0;
+      clip-path: polygon(0 0, 94% 0, 100% 12%, 100% 100%, 6% 100%, 0 88%);
+    }
+    .image-scene__caption {
+      padding-left: 18px;
+      border-left: 2px solid #a58a60;
+      color: rgba(240,233,220,.8);
+    }
+    .section {
+      padding-inline: clamp(24px, 8vw, 128px);
+    }
+    .section__inner,
+    .section--elevated .section__inner {
+      max-width: 980px;
+    }
+    .section:nth-of-type(even) .section__inner {
+      transform: translateX(min(7vw, 110px));
+    }
+    .chapter {
+      margin-bottom: clamp(56px, 8vw, 112px);
+    }
+    .chapter__line { width: clamp(48px, 8vw, 120px); background: var(--accent); }
+    .chapter__label { color: var(--accent); }
+    h2 {
+      width: min(1200px, 90vw);
+      margin-left: clamp(-140px, -8vw, -48px);
+      margin-bottom: clamp(44px, 7vw, 92px);
+      font-size: clamp(50px, 7.4vw, 116px);
+      font-weight: 500;
+      line-height: .94;
+      letter-spacing: -.055em;
+      text-wrap: balance;
+    }
+    h3 {
+      margin-top: clamp(80px, 11vw, 150px) !important;
+      max-width: 24ch;
+      font-size: clamp(32px, 4.3vw, 62px);
+      font-weight: 500;
+      line-height: 1.02;
+      letter-spacing: -.035em;
+      text-wrap: balance;
+    }
+    p { text-wrap: pretty; }
+    p.lead {
+      max-width: 48ch;
+      font-family: var(--serif);
+      font-size: clamp(22px, 2.6vw, 34px);
+      line-height: 1.5;
+    }
+    .section--elevated {
+      position: relative;
+      background:
+        linear-gradient(90deg, rgba(55,108,100,.12) 1px, transparent 1px) 8vw 0 / calc((100vw - 16vw) / 6) 100%,
+        var(--bg-elevated);
+      border-block: 1px solid rgba(24,32,29,.12);
+    }
+    .quote {
+      width: min(860px, 86vw);
+      margin: clamp(64px, 9vw, 120px) 0 clamp(64px, 9vw, 120px) clamp(6vw, 120px);
+      padding: 0 0 0 clamp(28px, 4vw, 56px);
+      border-left-color: var(--bronze);
+    }
+    .quote__text {
+      font-size: clamp(26px, 3.6vw, 50px);
+      line-height: 1.25;
+      color: var(--ink);
+    }
+    .thesis {
+      margin: clamp(64px, 9vw, 110px) 0 clamp(64px, 9vw, 110px) auto;
+      width: min(740px, 88vw);
+      padding: clamp(32px, 5vw, 64px);
+      background: var(--bg-card);
+      border: 0;
+      border-radius: 0;
+      color: var(--paper);
+    }
+    .thesis__label { color: #9bbab5; }
+    .thesis__text {
+      color: var(--paper);
+      font-size: clamp(21px, 2.5vw, 30px);
+    }
+    .thesis::before { background: linear-gradient(90deg, #a58a60, transparent); }
+    .thinkers { max-width: 1400px; }
+    .thinkers__intro { grid-template-columns: .7fr 1.3fr; }
+    .thinkers__intro p {
+      font-size: clamp(28px, 4.3vw, 68px);
+      line-height: 1.05;
+      letter-spacing: -.04em;
+    }
+    .thinkers__grid {
+      grid-template-columns: 1.25fr .8fr 1fr;
+      gap: clamp(10px, 1.5vw, 24px);
+    }
+    .thinker { border: 0; }
+    .thinker:nth-child(1) { transform: translateY(4rem); }
+    .thinker:nth-child(2) { margin-top: 0; }
+    .thinker:nth-child(3) { transform: translateY(9rem); }
+    .thinker__name {
+      color: var(--paper);
+      font-weight: 400;
+    }
+    .thinker__idea { color: rgba(240,233,220,.62); }
+    .thinker__index { color: #9bbab5; }
+    .asym {
+      grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr);
+      gap: clamp(48px, 8vw, 130px);
+      align-items: center;
+    }
+    .asym:nth-of-type(even) {
+      grid-template-columns: minmax(280px, .78fr) minmax(0, 1.22fr);
+    }
+    .emphasis {
+      max-width: 1180px;
+      margin-block: clamp(120px, 18vw, 270px);
+      text-align: left;
+      font-size: clamp(46px, 7.6vw, 118px);
+      font-weight: 500;
+      line-height: .96;
+      letter-spacing: -.055em;
+    }
+    .emphasis em { color: var(--accent); }
+    .pull-quote__inner { color: var(--ink); }
+    .list li, .step { border-color: rgba(24,32,29,.12); }
+    .editorial-media {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-card);
+      min-height: 390px;
+    }
+    .editorial-media img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      object-fit: cover;
+      filter: saturate(.82) contrast(1.03);
+      transition: transform 900ms cubic-bezier(.2,.8,.2,1);
+    }
+    .editorial-media:hover img { transform: scale(1.025); }
+    .editorial-media::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 0 1px rgba(240,233,220,.16);
+      pointer-events: none;
+    }
+    .editorial-media--portrait { min-height: min(76dvh, 820px); }
+    .editorial-media--wide {
+      min-height: min(62dvh, 660px);
+      margin: clamp(72px, 10vw, 140px) max(-10vw, -140px);
+      clip-path: polygon(4% 0, 100% 0, 96% 100%, 0 100%);
+    }
+    .editorial-media--panorama {
+      min-height: min(70dvh, 760px);
+      margin: 0;
+    }
+    .editorial-media--panorama img { object-position: center; }
+    .editorial-media--final {
+      min-height: 86dvh;
+      clip-path: polygon(0 5%, 95% 0, 100% 100%, 5% 95%);
+      margin: clamp(80px, 12vw, 180px) clamp(0px, 4vw, 70px) 0;
+    }
+    .editorial-media__caption {
+      position: absolute;
+      z-index: 2;
+      left: clamp(20px, 4vw, 64px);
+      bottom: clamp(20px, 4vw, 52px);
+      padding: 14px 18px;
+      max-width: 34ch;
+      background: rgba(23,33,31,.84);
+      color: #e8e0d2;
+      font-size: 10px;
+      line-height: 1.6;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+    .footer {
+      background: var(--bg-card);
+      border: 0;
+    }
+    .footer__text { color: #9aa29b; }
+
+    @media (max-width: 768px) {
+      body { background: var(--bg); }
+      .hero {
+        justify-content: center;
+        padding: 8rem 20px 6rem;
+      }
+      .hero::before { top: 12%; right: -20%; font-size: 120vw; }
+      .hero::after, .hero__scroll { display: none; }
+      .hero__title {
+        font-size: clamp(44px, 12.8vw, 58px);
+        line-height: .82;
+        white-space: nowrap;
+      }
+      .hero__title em { margin-left: 0; }
+      .hero__subtitle { margin-left: 0; }
+      .image-scene--hero {
+        margin: 0;
+        min-height: 64dvh;
+        clip-path: none;
+      }
+      .section:nth-of-type(even) .section__inner { transform: none; }
+      h2 {
+        width: auto;
+        margin-left: 0;
+        font-size: clamp(46px, 14vw, 68px);
+      }
+      h3 { font-size: clamp(32px, 10vw, 46px); }
+      .quote {
+        width: auto;
+        margin-left: 0;
+      }
+      .thesis { width: 100%; }
+      .thinkers__intro,
+      .thinkers__grid,
+      .asym,
+      .asym:nth-of-type(even) {
+        grid-template-columns: 1fr;
+      }
+      .thinker,
+      .thinker:nth-child(1),
+      .thinker:nth-child(2),
+      .thinker:nth-child(3) {
+        transform: none;
+        margin: 0;
+      }
+      .editorial-media--wide {
+        min-height: 48dvh;
+        margin-inline: 0;
+        clip-path: none;
+      }
+      .editorial-media--portrait { min-height: 68dvh; }
+      .editorial-media--panorama { min-height: 52dvh; }
+      .editorial-media--final {
+        min-height: 64dvh;
+        margin-inline: 0;
+        clip-path: none;
+      }
+      .emphasis {
+        padding-inline: 20px;
+        font-size: clamp(42px, 13vw, 64px);
+      }
+    }
+
     /* ─── REDUCED MOTION ─── */
     @media (prefers-reduced-motion: reduce) {
       .reveal, .reveal-left, .reveal-right, .reveal-scale { opacity: 1; transform: none; }
@@ -822,13 +1154,10 @@
     </p>
   </div>
   <div class="asym__viz">
-    <div class="viz viz--framed" style="width: 100%; min-height: 300px;">
-      <div class="viz__icon">◯</div>
-      <div class="viz__label">
-        <strong>Визуал · Правая колонка</strong>
-        Абстрактная нейросеть: переплетающиеся линии и узлы, формирующие силуэт человеческой головы. Тёмный фон, золотые точки-узлы. Минимализм.
-      </div>
-    </div>
+    <figure class="editorial-media editorial-media--portrait">
+      <img src="assets/marble-mind-v2.webp" alt="Античный мраморный профиль, пересечённый сетью бронзовых узлов">
+      <figcaption class="editorial-media__caption">Технический агент способен продолжить форму мысли — но не принять её последствия</figcaption>
+    </figure>
   </div>
 </div>
 
@@ -904,14 +1233,11 @@
       </div>
     </div>
 
-    <!-- VIZ PAUSE between subsections -->
-    <div class="viz viz--inline viz--framed reveal-scale">
-      <div class="viz__icon">◇</div>
-      <div class="viz__label">
-        <strong>Визуал · Пауза</strong>
-        Две руки: одна humanoide (тёплые тоны, кистевая), другая — из светящихся точек (холодные тоны, цифровая). Обе тянутся к одной точке в центре. Контраст аналогового и цифрового.
-      </div>
-    </div>
+    <!-- VISUAL PAUSE between subsections -->
+    <figure class="editorial-media editorial-media--wide reveal-scale">
+      <img src="assets/human-machine-hands-v2.webp" alt="Человеческая рука с пером напротив руки из бронзовой сети">
+      <figcaption class="editorial-media__caption">Инструмент касается аргумента. Авторство начинается там, где остаётся ответственность.</figcaption>
+    </figure>
 
     <!-- 1.2 UTILITARIANISM -->
     <h3 class="reveal" style="margin-top: 80px;">Утилитаризм: калькуляция последствий</h3>
@@ -983,13 +1309,10 @@
 <!-- Asymmetric: визуал слева + текст справа -->
 <div class="asym asym--wide" style="margin-top: 40px;">
   <div class="asym__viz reveal-left">
-    <div class="viz viz--framed" style="width: 100%; min-height: 380px;">
-      <div class="viz__icon">▬</div>
-      <div class="viz__label">
-        <strong>Визуал · Левая колонка</strong>
-        Крупный план: человеческая рука пишет перьевой ручкой, рядом — полупрозрачный интерфейс нейросети. Контраст аналогового и цифрового. Монохром с одним золотым акцентом.
-      </div>
-    </div>
+    <figure class="editorial-media editorial-media--portrait">
+      <img src="assets/intentional-writing-v2.webp" alt="Рука пишет перьевой ручкой под тенью античного профиля">
+      <figcaption class="editorial-media__caption">Интенциональный контроль нельзя вынести за пределы пишущего субъекта</figcaption>
+    </figure>
   </div>
   <div class="asym__text reveal-right">
     <p class="lead">
@@ -1071,14 +1394,11 @@
   </div>
 </section>
 
-<!-- Full-width viz divider -->
-<div class="viz viz--full viz--framed reveal-scale" style="margin-bottom: 0; min-height: 350px;">
-  <div class="viz__icon">◯</div>
-  <div class="viz__label">
-    <strong>Визуал · На всю ширину</strong>
-    Две наложенные друг на друга рукописные страницы: одна написана человеком (неровный почерк, помарки), другая — идеально напечатана. Обе полупрозрачны. Над ними — вопросительный знак из точек.
-  </div>
-</div>
+<!-- Full-width archive divider -->
+<figure class="editorial-media editorial-media--panorama reveal-scale">
+  <img src="assets/manuscript-audit-v2.webp" alt="Черновая рукопись и идеально набранная страница на архивном столе">
+  <figcaption class="editorial-media__caption">Две поверхности текста. Только одна сохраняет видимый след рассуждения.</figcaption>
+</figure>
 
 <!-- Pull-quote before Chapter 3 -->
 <div class="pull-quote reveal">
@@ -1127,14 +1447,11 @@
       Но традиционные концепции авторства, предполагающие единичного мыслящего субъекта, не способны описать ситуацию, где значительная часть работы делегирована алгоритму.
     </p>
 
-    <!-- VIZ INLINE -->
-    <div class="viz reveal-scale" style="margin: 48px 0;">
-      <div class="viz__icon">◇</div>
-      <div class="viz__label">
-        <strong>Визуал · Средний блок</strong>
-        Две наложенные друг на друга рукописные страницы: одна написана человеком (неровный почерк, помарки), другая — идеально напечатана. Обе полупрозрачны. Над ними — вопросительный знак из точек.
-      </div>
-    </div>
+    <!-- ARCHIVE DETAIL -->
+    <figure class="editorial-media editorial-media--wide reveal-scale">
+      <img src="assets/manuscript-audit-v2.webp" alt="Сопоставление исправленной рукописи и механически чистой страницы">
+      <figcaption class="editorial-media__caption">Прозрачность — это не метка, а возможность восстановить ход мысли</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -1181,14 +1498,11 @@
   ИИ должен оставаться инструментом,<br>расширяющим возможности исследователя,<br>но <em>не подменяющим</em> его собственное мышление
 </div>
 
-<!-- ═══════════════════ VIZ: FINAL ═══════════════════ -->
-<div class="viz viz--full viz--tall reveal-scale" style="margin-bottom: 0;">
-  <div class="viz__icon">◯</div>
-  <div class="viz__label">
-    <strong>Визуал · На весь экран · Финал</strong>
-    Одинокая фигура человека стоит перед бесконечной библиотекой / залом с книгами. Сверху падает луч света. Атмосфера тишины и сосредоточенности. Широкий план, кинематографичная композиция. Тёплые тона на тёмном фоне.
-  </div>
-</div>
+<!-- ═══════════════════ FINAL IMAGE ═══════════════════ -->
+<figure class="editorial-media editorial-media--final reveal-scale">
+  <img src="assets/library-stoa-v2.webp" alt="Одинокий исследователь в библиотеке, соединённой с античной стоей">
+  <figcaption class="editorial-media__caption">Машина может расширить библиотеку. Войти в пространство смысла всё ещё должен человек.</figcaption>
+</figure>
 
 <!-- ═══════════════════ ЗАКЛЮЧЕНИЕ ═══════════════════ -->
 <section class="section" style="margin-top: var(--section-gap);">
