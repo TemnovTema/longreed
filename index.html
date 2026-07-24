@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Нейросетевое затмение — Философия и ИИ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0b;
+      --bg-elevated: #111113;
+      --bg-card: #18181b;
+      --text-primary: #e8e6e3;
+      --text-secondary: #9a9590;
+      --text-muted: #5c5854;
+      --accent: #c9a96e;
+      --accent-dim: rgba(201, 169, 110, 0.12);
+      --accent-glow: rgba(201, 169, 110, 0.25);
+      --serif: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --max-w: 720px;
+      --section-gap: clamp(120px, 18vw, 220px);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      overflow-x: clip;
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body { overflow-x: clip; }
+
+    ::selection {
+      background: var(--accent);
+      color: var(--bg);
+    }
+
+    /* ─── GRAIN OVERLAY ─── */
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 200px;
+    }
+
+    /* ─── PROGRESS BAR ─── */
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: var(--accent);
+      z-index: 99;
+      width: 0%;
+      transform-origin: left;
+    }
+
+    /* ─── NAV ─── */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      mix-blend-mode: difference;
+      opacity: 0;
+    }
+    .nav__logo {
+      font-family: var(--serif);
+      font-size: 14px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
+    .nav__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 80px 24px;
+      position: relative;
+    }
+    .hero__eyebrow {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 40px;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .hero__title {
+      font-family: var(--serif);
+      font-size: clamp(48px, 8vw, 120px);
+      font-weight: 600;
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      max-width: 900px;
+      opacity: 0;
+      transform: translateY(30px);
+      cursor: default;
+      display: inline-block;
+    }
+    .hero__title em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    /* ─── WATER CHARS ─── */
+    .t-char {
+      display: inline-block;
+      will-change: transform, filter;
+      position: relative;
+    }
+    .t-char.space {
+      width: 0.25em;
+    }
+    .hero__subtitle {
+      font-family: var(--serif);
+      font-size: clamp(18px, 2.5vw, 26px);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--text-secondary);
+      margin-top: 32px;
+      max-width: 500px;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .hero__scroll {
+      position: absolute;
+      bottom: 48px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+    }
+    .hero__scroll span {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .hero__scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+      50% { opacity: 1; transform: scaleY(1); }
+    }
+
+    /* ─── VIZ PLACEHOLDER ─── */
+    .viz {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      border: 1px solid rgba(201, 169, 110, 0.2);
+      border-radius: 4px;
+      background: var(--bg-card);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    .viz::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, var(--accent-dim), transparent 70%);
+      pointer-events: none;
+    }
+    .viz--full {
+      max-width: 100%;
+      border-radius: 0;
+      border-left: none;
+      border-right: none;
+      min-height: 70dvh;
+    }
+    .viz--tall {
+      min-height: 80dvh;
+    }
+    .viz__icon {
+      font-size: 32px;
+      margin-bottom: 16px;
+      opacity: 0.4;
+    }
+    .viz__label {
+      font-family: var(--sans);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      max-width: 400px;
+      line-height: 1.8;
+    }
+    .viz__label strong {
+      display: block;
+      color: var(--accent);
+      font-weight: 500;
+      margin-bottom: 4px;
+      font-size: 12px;
+    }
+
+    /* ─── EDITORIAL IMAGERY ─── */
+    .image-scene {
+      position: relative;
+      overflow: hidden;
+      background: var(--bg-card);
+      isolation: isolate;
+    }
+    .image-scene::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(10,10,11,0.08), rgba(10,10,11,0.58)),
+        radial-gradient(circle at 50% 35%, transparent 20%, rgba(10,10,11,0.28) 100%);
+      z-index: 1;
+    }
+    .image-scene img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.015);
+    }
+    .image-scene--hero {
+      min-height: min(78dvh, 840px);
+      border-block: 1px solid rgba(201, 169, 110, 0.16);
+    }
+    .image-scene__caption {
+      position: absolute;
+      left: clamp(20px, 4vw, 64px);
+      bottom: clamp(20px, 4vw, 48px);
+      z-index: 2;
+      max-width: 320px;
+      font-size: 11px;
+      line-height: 1.6;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(232, 230, 227, 0.7);
+    }
+    .thinkers {
+      max-width: 1240px;
+      margin: 0 auto var(--section-gap);
+      padding: 0 24px;
+    }
+    .thinkers__intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+      gap: 48px;
+      margin-bottom: 36px;
+    }
+    .thinkers__kicker {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .thinkers__intro p {
+      margin: 0;
+      font-family: var(--serif);
+      font-size: clamp(20px, 2.5vw, 30px);
+      line-height: 1.35;
+      color: var(--text-primary);
+    }
+    .thinkers__grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr 1.1fr;
+      gap: 14px;
+      align-items: start;
+    }
+    .thinker {
+      position: relative;
+      min-height: clamp(460px, 60vw, 720px);
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid rgba(201, 169, 110, 0.12);
+    }
+    .thinker:nth-child(2) {
+      margin-top: 72px;
+    }
+    .thinker img {
+      width: 100%;
+      height: 100%;
+      min-height: inherit;
+      object-fit: cover;
+      filter: saturate(0.78) contrast(1.05);
+      transition: transform 700ms cubic-bezier(.2,.8,.2,1), filter 400ms ease;
+    }
+    .thinker:hover img {
+      transform: scale(1.035);
+      filter: saturate(0.95) contrast(1.02);
+    }
+    .thinker::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,11,0.92), transparent 46%);
+      pointer-events: none;
+    }
+    .thinker__meta {
+      position: absolute;
+      z-index: 2;
+      left: 24px;
+      right: 24px;
+      bottom: 22px;
+    }
+    .thinker__index {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+    }
+    .thinker__name {
+      font-family: var(--serif);
+      font-size: clamp(28px, 3vw, 44px);
+      line-height: 1;
+      color: var(--text-primary);
+    }
+    .thinker__idea {
+      margin-top: 8px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    /* ─── SECTION ─── */
+    .section {
+      padding: 0 24px;
+      margin-bottom: var(--section-gap);
+    }
+    .section__inner {
+      max-width: var(--max-w);
+      margin: 0 auto;
+    }
+
+    /* ─── CHAPTER MARKER ─── */
+    .chapter {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .chapter__line {
+      width: 40px;
+      height: 1px;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+    .chapter__label {
+      font-family: var(--sans);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+
+    /* ─── HEADINGS ─── */
+    h2 {
+      font-family: var(--serif);
+      font-size: clamp(32px, 5vw, 56px);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.015em;
+      margin-bottom: 32px;
+      color: var(--text-primary);
+    }
+    h2 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    h3 {
+      font-family: var(--serif);
+      font-size: clamp(22px, 3vw, 32px);
+      font-weight: 600;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      color: var(--text-primary);
+    }
+
+    /* ─── TEXT ─── */
+    p {
+      font-size: clamp(16px, 1.8vw, 19px);
+      line-height: 1.8;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      max-width: 65ch;
+    }
+    p.lead {
+      font-size: clamp(18px, 2.2vw, 22px);
+      color: var(--text-primary);
+      line-height: 1.7;
+    }
+
+    /* ─── QUOTE ─── */
+    .quote {
+      position: relative;
+      padding: 40px 0 40px 32px;
+      margin: 48px 0;
+      border-left: 2px solid var(--accent);
+    }
+    .quote__text {
+      font-family: var(--serif);
+      font-size: clamp(20px, 2.8vw, 28px);
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+      max-width: 100%;
+    }
+    .quote__author {
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── THESIS BOX ─── */
+    .thesis {
+      background: var(--bg-elevated);
+      border: 1px solid rgba(201, 169, 110, 0.15);
+      border-radius: 4px;
+      padding: 32px;
+      margin: 40px 0;
+      position: relative;
+    }
+    .thesis::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+    }
+    .thesis__label {
+      font-family: var(--sans);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .thesis__text {
+      font-family: var(--serif);
+      font-size: clamp(18px, 2.2vw, 22px);
+      line-height: 1.6;
+      color: var(--text-primary);
+      font-weight: 400;
+    }
+
+    /* ─── DIVIDER ─── */
+    .divider {
+      max-width: var(--max-w);
+      margin: var(--section-gap) auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .divider__dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: 0.5;
+    }
+
+    /* ─── LIST ─── */
+    .list {
+      list-style: none;
+      margin: 32px 0;
+    }
+    .list li {
+      font-size: clamp(16px, 1.8vw, 19px);
+      line-height: 1.7;
+      color: var(--text-secondary);
+      padding: 12px 0;
+      padding-left: 24px;
+      position: relative;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .list li:last-child { border-bottom: none; }
+    .list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      width: 6px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    /* ─── NUMBERED STEPS ─── */
+    .steps {
+      counter-reset: step;
+      margin: 40px 0;
+    }
+    .step {
+      counter-increment: step;
+      display: flex;
+      gap: 20px;
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .step:last-child { border-bottom: none; }
+    .step__num {
+      font-family: var(--serif);
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--accent);
+      opacity: 0.4;
+      line-height: 1;
+      min-width: 48px;
+    }
+    .step__num::after {
+      content: counter(step, decimal-leading-zero);
+    }
+    .step__content h4 {
+      font-family: var(--sans);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+    .step__content p {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 0;
+    }
+
+    /* ─── EMPHASIS LINE ─── */
+    .emphasis {
+      font-family: var(--serif);
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 600;
+      line-height: 1.2;
+      color: var(--text-primary);
+      text-align: center;
+      max-width: 800px;
+      margin: 80px auto;
+      padding: 0 24px;
+    }
+    .emphasis em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    /* ─── SECTION BG ALTERNATE ─── */
+    .section--elevated {
+      background: var(--bg-elevated);
+      padding-top: var(--section-gap);
+      padding-bottom: var(--section-gap);
+      margin-bottom: 0;
+    }
+    .section--elevated .section__inner {
+      max-width: var(--max-w);
+      padding: 0 24px;
+    }
+
+    /* ─── ASYMMETRIC LAYOUT ─── */
+    .asym {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    .asym--wide { max-width: 1200px; }
+    .asym__text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .asym__viz {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ─── PULL QUOTE (full-width accent) ─── */
+    .pull-quote {
+      max-width: 900px;
+      margin: 80px auto;
+      padding: 0 24px;
+      position: relative;
+    }
+    .pull-quote__inner {
+      font-family: var(--serif);
+      font-size: clamp(24px, 3.5vw, 40px);
+      font-style: italic;
+      line-height: 1.35;
+      color: var(--text-primary);
+      padding-left: 32px;
+      border-left: 2px solid var(--accent);
+      position: relative;
+    }
+    .pull-quote__inner::before {
+      content: '«';
+      position: absolute;
+      left: -8px;
+      top: -20px;
+      font-size: 80px;
+      color: var(--accent);
+      opacity: 0.15;
+      font-style: normal;
+      line-height: 1;
+    }
+    .pull-quote__author {
+      margin-top: 16px;
+      padding-left: 32px;
+      font-family: var(--sans);
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── VIZ INLINE (between text blocks) ─── */
+    .viz--inline {
+      max-width: 100%;
+      margin: 56px 0;
+      min-height: 280px;
+    }
+
+    /* ─── VIZ DOUBLE FRAME ─── */
+    .viz--framed {
+      position: relative;
+      padding: 12px;
+      background: var(--bg-card);
+      border: 1px solid rgba(201, 169, 110, 0.15);
+    }
+    .viz--framed::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px solid rgba(201, 169, 110, 0.08);
+      pointer-events: none;
+    }
+
+    /* ─── SECTION SPACER ─── */
+    .spacer { height: clamp(40px, 8vw, 100px); }
+    .spacer--lg { height: clamp(80px, 14vw, 180px); }
+
+    @media (max-width: 768px) {
+      .asym {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .thinkers__intro,
+      .thinkers__grid {
+        grid-template-columns: 1fr;
+      }
+      .thinkers__intro { gap: 16px; }
+      .thinker,
+      .thinker:nth-child(2) {
+        min-height: 72dvh;
+        margin-top: 0;
+      }
+      .reveal-left,
+      .reveal-right {
+        transform: translateY(40px);
+      }
+    }
+
+    /* ─── FOOTER ─── */
+    .footer {
+      padding: 80px 24px;
+      text-align: center;
+      border-top: 1px solid rgba(255,255,255,0.04);
+    }
+    .footer__line {
+      width: 32px;
+      height: 1px;
+      background: var(--accent);
+      margin: 0 auto 24px;
+    }
+    .footer__text {
+      font-family: var(--serif);
+      font-size: 14px;
+      font-style: italic;
+      color: var(--text-muted);
+      max-width: 400px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ─── ANIMATION STATES ─── */
+    .reveal { opacity: 0; transform: translateY(40px); }
+    .reveal-left { opacity: 0; transform: translateX(-40px); }
+    .reveal-right { opacity: 0; transform: translateX(40px); }
+    .reveal-scale { opacity: 0; transform: scale(0.95); }
+    .reveal-line { transform: scaleX(0); transform-origin: left; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 768px) {
+      .nav { padding: 16px 20px; }
+      .hero { padding: 60px 20px; }
+      .section { padding: 0 20px; }
+      .section--elevated .section__inner { padding: 0 20px; }
+      .quote { padding-left: 20px; }
+      .thesis { padding: 24px; }
+      .viz { min-height: 300px; padding: 40px 20px; }
+      .viz--full { min-height: 50dvh; }
+      .viz--tall { min-height: 50dvh; }
+    }
+
+    /* ─── REDUCED MOTION ─── */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal, .reveal-left, .reveal-right, .reveal-scale { opacity: 1; transform: none; }
+      .hero__scroll-line { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<nav class="nav" id="nav">
+  <div class="nav__logo">Нейросетевое затмение</div>
+  <div class="nav__dot"></div>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section class="hero">
+  <div class="hero__eyebrow">Философия · ИИ · Этика</div>
+  <h1 class="hero__title" id="heroTitle">Нейросетевое<em> затмение</em></h1>
+  <p class="hero__subtitle">
+    Может ли философский текст существовать без философа?
+  </p>
+  <div class="hero__scroll">
+    <span>Листайте</span>
+    <div class="hero__scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════ HERO IMAGE ═══════════════════ -->
+<div class="image-scene image-scene--hero reveal-scale">
+  <img src="assets/neural-eclipse-hero.webp" alt="Человек перед цифровым затмением, окружённым сетью данных и фрагментами рукописей">
+  <div class="image-scene__caption">Когда форма мысли отделяется от того, кто способен за неё отвечать</div>
+</div>
+
+<!-- ═══════════════════ ЗАВЯЗКА ═══════════════════ -->
+<section class="section">
+  <div class="section__inner">
+    <div class="chapter reveal">
+      <div class="chapter__line"></div>
+      <div class="chapter__label">Завязка</div>
+    </div>
+
+    <h2 class="reveal">Нейросети научились писать тексты,<br>которые <em>выглядят</em> как мышление</h2>
+
+    <p class="lead reveal">
+      Но сходство формы не означает сходства природы. Кейс «Нейросетевое затмение» ставит простой вопрос: если нейросеть сгенерировала философский аргумент — это всё ещё философия?
+    </p>
+
+    <div class="thesis reveal">
+      <div class="thesis__label">Ключевое различение</div>
+      <div class="thesis__text">
+        Нейросеть — технический агент. Она инициирует коммуникативные акты, но лишена моральной агентности: способности к автономному волеизъявлению, рефлексии и принятию ответственности.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Asymmetric: текст + визуал -->
+<div class="asym asym--wide reveal">
+  <div class="asym__text">
+    <p>
+      Центр тяжести смещается на человека, который санкционирует использование ИИ и присваивает результаты. Философствование неотделимо от практики рефлексии и ответственного выбора.
+    </p>
+    <p style="color: var(--text-muted);">
+      Текст, сгенерированный нейросетью, при всей своей формальной корректности не может претендовать на статус философского результата — если человек не сохраняет контроль над концептуальной рамкой.
+    </p>
+  </div>
+  <div class="asym__viz">
+    <div class="viz viz--framed" style="width: 100%; min-height: 300px;">
+      <div class="viz__icon">◯</div>
+      <div class="viz__label">
+        <strong>Визуал · Правая колонка</strong>
+        Абстрактная нейросеть: переплетающиеся линии и узлы, формирующие силуэт человеческой головы. Тёмный фон, золотые точки-узлы. Минимализм.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"><div class="divider__dot"></div></div>
+
+<!-- ═══════════════════ THREE ETHICAL OPTICS ═══════════════════ -->
+<div class="thinkers">
+  <div class="thinkers__intro reveal">
+    <div class="thinkers__kicker">Три оптики · один вопрос</div>
+    <p>Не «может ли машина написать», а кто отвечает за написанное.</p>
+  </div>
+  <div class="thinkers__grid">
+    <figure class="thinker reveal-left">
+      <img src="assets/immanuel-kant.webp" alt="Редакционный портрет Иммануила Канта">
+      <figcaption class="thinker__meta">
+        <span class="thinker__index">01 / Деонтология</span>
+        <div class="thinker__name">Иммануил Кант</div>
+        <div class="thinker__idea">обязанность · честность · закон</div>
+      </figcaption>
+    </figure>
+    <figure class="thinker reveal">
+      <img src="assets/john-stuart-mill.webp" alt="Редакционный портрет Джона Стюарта Милля">
+      <figcaption class="thinker__meta">
+        <span class="thinker__index">02 / Утилитаризм</span>
+        <div class="thinker__name">Джон Стюарт Милль</div>
+        <div class="thinker__idea">последствия · польза · доверие</div>
+      </figcaption>
+    </figure>
+    <figure class="thinker reveal-right">
+      <img src="assets/aristotle.webp" alt="Редакционный портрет Аристотеля">
+      <figcaption class="thinker__meta">
+        <span class="thinker__index">03 / Этика добродетели</span>
+        <div class="thinker__name">Аристотель</div>
+        <div class="thinker__idea">практика · характер · благо</div>
+      </figcaption>
+    </figure>
+  </div>
+</div>
+
+<!-- ═══════════════════ ГЛАВА 1 ═══════════════════ -->
+<section class="section--elevated">
+  <div class="section__inner">
+    <div class="chapter reveal">
+      <div class="chapter__line"></div>
+      <div class="chapter__label">Глава 1</div>
+    </div>
+
+    <h2 class="reveal">Три взгляда<br>на одну <em>проблему</em></h2>
+
+    <!-- 1.1 DEONTOLOGY -->
+    <h3 class="reveal" style="margin-top: 64px;">Деонтология: честность как обязанность</h3>
+    <p class="reveal" style="color: var(--text-muted); font-size: 14px; margin-bottom: 32px;">Кант · Милль · Донат</p>
+
+    <p class="reveal">
+      Автор несёт безусловную обязанность интеллектуальной честности. Сокрытие использования ИИ — нарушение морального закона, запрещающего ложь.
+    </p>
+
+    <div class="quote reveal">
+      <div class="quote__text">
+        «Способность людей держать данное слово составляет основу благополучия общества; недостаток этой добродетели может быть угрозой для самого существования нашей цивилизации»
+      </div>
+      <div class="quote__author">— Дж. С. Милль</div>
+    </div>
+
+    <p class="reveal">
+      Делегирование нейросети ключевых этапов мышления — постановки проблемы, аргументации, выводов — лишает автора возможности исполнить моральный долг. Этот долг: самостоятельная ответственность за логику рассуждения.
+    </p>
+
+    <div class="thesis reveal">
+      <div class="thesis__label">Вывод</div>
+      <div class="thesis__text">
+        Сокрытие ИИ подрывает саму основу академической верификации. Автор, скрывающий участие нейросети, нарушает негласный контракт с читателем и рецензентом.
+      </div>
+    </div>
+
+    <!-- VIZ PAUSE between subsections -->
+    <div class="viz viz--inline viz--framed reveal-scale">
+      <div class="viz__icon">◇</div>
+      <div class="viz__label">
+        <strong>Визуал · Пауза</strong>
+        Две руки: одна humanoide (тёплые тоны, кистевая), другая — из светящихся точек (холодные тоны, цифровая). Обе тянутся к одной точке в центре. Контраст аналогового и цифрового.
+      </div>
+    </div>
+
+    <!-- 1.2 UTILITARIANISM -->
+    <h3 class="reveal" style="margin-top: 80px;">Утилитаризм: калькуляция последствий</h3>
+    <p class="reveal" style="color: var(--text-muted); font-size: 14px; margin-bottom: 32px;">Милль</p>
+
+    <p class="reveal">
+      ИИ может снизить когнитивный порог для черновиков, ускорить редактирование, повысить продуктивность. Но цена — снижение качества аргументации, усреднённые формулировки, эрозия доверия к публикациям.
+    </p>
+
+    <div class="quote reveal">
+      <div class="quote__text">
+        «Identity deception manipulates that trust, inducing us to believe things we otherwise would not»
+      </div>
+      <div class="quote__author">— Дж. Донат</div>
+    </div>
+
+    <p class="reveal">
+      Краткосрочные выгоды от ускорения исследовательского цикла не компенсируют ущерб от системного обесценивания информации. Доверие — базовое условие функционирования академического института.
+    </p>
+
+    <div class="thesis reveal">
+      <div class="thesis__label">Вывод</div>
+      <div class="thesis__text">
+        Неконтролируемое использование нейросетей неоправданно. Прирост числа работ при падении содержательной ценности — отрицательный баланс.
+      </div>
+    </div>
+
+    <!-- PULL QUOTE -->
+    <div class="pull-quote reveal">
+      <div class="pull-quote__inner">
+        Доверие — базовое условие функционирования академического института, и его разрушение ведёт к снижению общей общественной пользы
+      </div>
+      <div class="pull-quote__author">— из выводов утилитаристского анализа</div>
+    </div>
+
+    <!-- 1.3 VIRTUE ETHICS -->
+    <h3 class="reveal" style="margin-top: 80px;">Этика добродетели: философия как практика</h3>
+    <p class="reveal" style="color: var(--text-muted); font-size: 14px; margin-bottom: 32px;">Аристотель · Разин</p>
+
+    <p class="reveal">
+      Интеллектуальные добродетели — проницательность, рассудительность, способность к аргументации — формируются только в практике самостоятельного мышления.
+    </p>
+
+    <div class="quote reveal">
+      <div class="quote__text">
+        «Всякое искусство и всякое учение стремятся к определённому благу»
+      </div>
+      <div class="quote__author">— Аристотель, Никомахова этика</div>
+    </div>
+
+    <p class="reveal">
+      Благо заключается не во внешнем продукте, а в совершенствовании разумной деятельности. Если ключевые операции делегируются нейросети, автор лишается возможности упражнять добродетели.
+    </p>
+
+    <div class="thesis reveal">
+      <div class="thesis__label">Вывод</div>
+      <div class="thesis__text">
+        Нейросеть допустима лишь как инструмент для технических задач. Центральные акты рефлексии, оценки и синтеза остаются проявлением агентности автора.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ EMPHASIS ═══════════════════ -->
+<div class="emphasis reveal">
+  Граница между философским текстом<br>и его имитацией проходит по линии<em> интенционального контроля</em>
+</div>
+
+<!-- Asymmetric: визуал слева + текст справа -->
+<div class="asym asym--wide" style="margin-top: 40px;">
+  <div class="asym__viz reveal-left">
+    <div class="viz viz--framed" style="width: 100%; min-height: 380px;">
+      <div class="viz__icon">▬</div>
+      <div class="viz__label">
+        <strong>Визуал · Левая колонка</strong>
+        Крупный план: человеческая рука пишет перьевой ручкой, рядом — полупрозрачный интерфейс нейросети. Контраст аналогового и цифрового. Монохром с одним золотым акцентом.
+      </div>
+    </div>
+  </div>
+  <div class="asym__text reveal-right">
+    <p class="lead">
+      Деонтологический, утилитаристский и добродетельный подходы сходятся в требовании сохранять решающую роль человека как ответственного субъекта.
+    </p>
+    <p>
+      Даже при вспомогательном использовании нейросети автор обязан сохранять способность к рефлексии над содержанием и отвечать за выводы.
+    </p>
+  </div>
+</div>
+
+<div class="spacer"></div>
+
+<!-- ═══════════════════ ГЛАВА 2 ═══════════════════ -->
+<section class="section">
+  <div class="section__inner">
+    <div class="chapter reveal">
+      <div class="chapter__line"></div>
+      <div class="chapter__label">Глава 2</div>
+    </div>
+
+    <h2 class="reveal">Граница <em>допустимого</em></h2>
+
+    <h3 class="reveal" style="margin-top: 48px;">Когда ИИ этичен</h3>
+
+    <p class="reveal">Нейросеть допустима на этапах:</p>
+
+    <ul class="list reveal">
+      <li>Генерация альтернативных формулировок</li>
+      <li>Выявление скрытых допущений в аргументации</li>
+      <li>Структурирование материала</li>
+      <li>Редактирование и проверка формальной логики</li>
+    </ul>
+
+    <div class="quote reveal">
+      <div class="quote__text">
+        «Машина просто перебирает заложенную в неё информацию, человек способен классифицировать информацию как важную и неважную»
+      </div>
+      <div class="quote__author">— А. В. Разин</div>
+    </div>
+
+    <div class="thesis reveal">
+      <div class="thesis__label">Ключевое условие</div>
+      <div class="thesis__text">
+        Все ключевые решения — отбор, интерпретация, утверждение содержания — остаются за человеком. Автор направляет нейросеть, оценивает результаты, несёт ответственность.
+      </div>
+    </div>
+
+    <!-- CONDITIONS -->
+    <h3 class="reveal" style="margin-top: 80px;">Условия публикации</h3>
+
+    <div class="steps reveal">
+      <div class="step">
+        <div class="step__num"></div>
+        <div class="step__content">
+          <h4>Прозрачность метода</h4>
+          <p>Подробное описание этапов, делегированных нейросети, и этапов, выполненных человеком</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num"></div>
+        <div class="step__content">
+          <h4>Рефлексивный контроль</h4>
+          <p>Автор способен критически осмыслить всё содержание и обосновать выводы</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step__num"></div>
+        <div class="step__content">
+          <h4>Институциональная верификация</h4>
+          <p>Устная защита, проверка способности воспроизвести ход мысли</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="reveal">
+      Нейросеть не может быть соавтором. У неё нет моральной ответственности, интенциональности, рефлексивного осознания утверждений.
+    </p>
+  </div>
+</section>
+
+<!-- Full-width viz divider -->
+<div class="viz viz--full viz--framed reveal-scale" style="margin-bottom: 0; min-height: 350px;">
+  <div class="viz__icon">◯</div>
+  <div class="viz__label">
+    <strong>Визуал · На всю ширину</strong>
+    Две наложенные друг на друга рукописные страницы: одна написана человеком (неровный почерк, помарки), другая — идеально напечатана. Обе полупрозрачны. Над ними — вопросительный знак из точек.
+  </div>
+</div>
+
+<!-- Pull-quote before Chapter 3 -->
+<div class="pull-quote reveal">
+  <div class="pull-quote__inner">
+    Машина — среда, а не разум. Она не может быть субъектом авторства
+  </div>
+  <div class="pull-quote__author">— из анализа проблемы авторства</div>
+</div>
+
+<div class="divider"><div class="divider__dot"></div></div>
+
+<!-- ═══════════════════ ГЛАВА 3 ═══════════════════ -->
+<section class="section--elevated">
+  <div class="section__inner">
+    <div class="chapter reveal">
+      <div class="chapter__line"></div>
+      <div class="chapter__label">Глава 3</div>
+    </div>
+
+    <h2 class="reveal">Что <em>не работает</em></h2>
+
+    <h3 class="reveal" style="margin-top: 48px;">Формальная прозрачность</h3>
+
+    <p class="reveal">
+      Маркировка «использован ИИ» — первый шаг, но недостаточный. Без верификации — проверки логов, аудита черновиков — декларация остаётся неподтверждённым заявлением.
+    </p>
+
+    <div class="quote reveal">
+      <div class="quote__text">
+        «Нет этической доктрины, которая не смягчала бы строгости своих законов, предоставляя человеку свободу для самообмана и недобросовестной софистики»
+      </div>
+      <div class="quote__author">— В. С. Соловьёв</div>
+    </div>
+
+    <p class="reveal">
+      Без чётких критериев — порогового процента, обязательности раскрытия этапов — меры прозрачности теряют регулятивную силу.
+    </p>
+
+    <h3 class="reveal" style="margin-top: 64px;">Проблема авторства</h3>
+
+    <p class="reveal">
+      Редакционные метки не решают проблему распределения ответственности. Машина — «среда, а не разум». Она не может быть субъектом авторства.
+    </p>
+
+    <p class="reveal">
+      Но традиционные концепции авторства, предполагающие единичного мыслящего субъекта, не способны описать ситуацию, где значительная часть работы делегирована алгоритму.
+    </p>
+
+    <!-- VIZ INLINE -->
+    <div class="viz reveal-scale" style="margin: 48px 0;">
+      <div class="viz__icon">◇</div>
+      <div class="viz__label">
+        <strong>Визуал · Средний блок</strong>
+        Две наложенные друг на друга рукописные страницы: одна написана человеком (неровный почерк, помарки), другая — идеально напечатана. Обе полупрозрачны. Над ними — вопросительный знак из точек.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ГЛАВНАЯ УГРОЗА ═══════════════════ -->
+<section class="section">
+  <div class="section__inner">
+    <div class="chapter reveal">
+      <div class="chapter__line"></div>
+      <div class="chapter__label">Главное</div>
+    </div>
+
+    <h2 class="reveal">Возможно, главная угроза ИИ —<br>не в том, что машины начнут <em>философствовать</em></h2>
+
+    <p class="lead reveal" style="margin-top: 32px;">
+      А в том, что люди постепенно перестанут философствовать самостоятельно.
+    </p>
+
+    <div class="quote reveal" style="margin-top: 48px;">
+      <div class="quote__text">
+        «Какова ценность взаимодействий, которые не содержат понимания нас и ничего не вносят в общую копилку человеческих смыслов?»
+      </div>
+      <div class="quote__author">— Шерри Тёркл</div>
+    </div>
+
+    <p class="reveal">
+      Систематическое делегирование нейросети ключевых этапов рассуждения ведёт к атрофии навыков самостоятельного мышления. Лёгкость получения готового текста может отвратить автора от трудоёмкого процесса размышления.
+    </p>
+
+    <div class="thesis reveal">
+      <div class="thesis__label">Риск</div>
+      <div class="thesis__text">
+        Полная замена философа машиной требует преодоления фундаментальных ограничений ИИ. А снижение интеллектуальной активности человека происходит незаметно и необратимо.
+      </div>
+    </div>
+
+    <p class="reveal">
+      Дисциплина рискует потерять не отдельные тексты, а саму способность к порождению нового философского знания.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════ EMPHASIS 2 ═══════════════════ -->
+<div class="emphasis reveal">
+  ИИ должен оставаться инструментом,<br>расширяющим возможности исследователя,<br>но <em>не подменяющим</em> его собственное мышление
+</div>
+
+<!-- ═══════════════════ VIZ: FINAL ═══════════════════ -->
+<div class="viz viz--full viz--tall reveal-scale" style="margin-bottom: 0;">
+  <div class="viz__icon">◯</div>
+  <div class="viz__label">
+    <strong>Визуал · На весь экран · Финал</strong>
+    Одинокая фигура человека стоит перед бесконечной библиотекой / залом с книгами. Сверху падает луч света. Атмосфера тишины и сосредоточенности. Широкий план, кинематографичная композиция. Тёплые тона на тёмном фоне.
+  </div>
+</div>
+
+<!-- ═══════════════════ ЗАКЛЮЧЕНИЕ ═══════════════════ -->
+<section class="section" style="margin-top: var(--section-gap);">
+  <div class="section__inner">
+    <div class="chapter reveal">
+      <div class="chapter__line"></div>
+      <div class="chapter__label">Заключение</div>
+    </div>
+
+    <h2 class="reveal">Граница проходит<br>по линии <em>контроля</em></h2>
+
+    <p class="lead reveal">
+      Три подхода — деонтология, утилитаризм, этика добродетели — сходятся в одном: человек остаётся решающим субъектом. Даже при вспомогательном использовании нейросети автор обязан сохранять рефлексию и отвечать за выводы.
+    </p>
+
+    <p class="reveal">
+      Граница между философским текстом и его имитацией проходит не по степени технологического вмешательства, а по линии интенционального контроля.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="footer">
+  <div class="footer__line"></div>
+  <div class="footer__text">
+    Аристотель · Милль · Кант · Разин · Донат · Powers & Ganascia · Тёркл · Соловьёв
+  </div>
+</footer>
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Progress bar
+  gsap.to('#progressBar', {
+    width: '100%',
+    ease: 'none',
+    scrollTrigger: {
+      trigger: document.body,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 0.3,
+    }
+  });
+
+  // Nav fade in
+  gsap.to('#nav', { opacity: 1, duration: 1, delay: 1.5 });
+
+  // Hero entrance — clean cinematic fade
+  const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+  heroTl
+    .to('.hero__eyebrow', { opacity: 1, y: 0, duration: 0.8, delay: 0.3 })
+    .to('.hero__title', { opacity: 1, y: 0, duration: 1.2 }, '-=0.4')
+    .to('.hero__subtitle', { opacity: 1, y: 0, duration: 0.8 }, '-=0.5')
+    .to('.hero__scroll', { opacity: 1, duration: 0.6 }, '-=0.3');
+
+  // Reveal animations
+  const reveals = document.querySelectorAll('.reveal');
+  reveals.forEach(el => {
+    gsap.to(el, {
+      opacity: 1,
+      y: 0,
+      duration: 0.9,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 85%',
+        once: true,
+      }
+    });
+  });
+
+  // Directional reveals for asymmetric editorial blocks
+  document.querySelectorAll('.reveal-left, .reveal-right').forEach(el => {
+    gsap.to(el, {
+      opacity: 1,
+      x: 0,
+      y: 0,
+      duration: 1,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 86%',
+        once: true,
+      }
+    });
+  });
+
+  // Reveal scale
+  document.querySelectorAll('.reveal-scale').forEach(el => {
+    gsap.to(el, {
+      opacity: 1,
+      scale: 1,
+      duration: 1.2,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 80%',
+        once: true,
+      }
+    });
+  });
+
+  // Quote left border animation
+  document.querySelectorAll('.quote').forEach(el => {
+    gsap.fromTo(el,
+      { borderLeftColor: 'rgba(201, 169, 110, 0)' },
+      {
+        borderLeftColor: 'rgba(201, 169, 110, 1)',
+        duration: 0.6,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 80%',
+          once: true,
+        }
+      }
+    );
+  });
+
+  // Thesis box top line
+  document.querySelectorAll('.thesis').forEach(el => {
+    gsap.fromTo(el.querySelector('::before') || el,
+      { scaleX: 0 },
+      {
+        scaleX: 1,
+        duration: 0.8,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 80%',
+          once: true,
+        }
+      }
+    );
+  });
+
+  // Emphasis text parallax
+  document.querySelectorAll('.emphasis').forEach(el => {
+    gsap.to(el, {
+      y: -20,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 1,
+      }
+    });
+  });
+
+  // Chapter lines grow
+  document.querySelectorAll('.chapter__line').forEach(el => {
+    gsap.fromTo(el,
+      { scaleX: 0 },
+      {
+        scaleX: 1,
+        duration: 0.6,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 85%',
+          once: true,
+        }
+      }
+    );
+  });
+
+  // ─── WATER DISTORTION: universal per-character ───
+
+  // 1. Split element innerHTML into t-char spans (preserves <em>, <br>, <strong>)
+  function splitIntoChars(el) {
+    const html = el.innerHTML;
+    let result = '';
+    let i = 0;
+    while (i < html.length) {
+      // <em> tag
+      if (html.slice(i, i + 4) === '<em>') {
+        result += '<em>'; i += 4; continue;
+      }
+      if (html.slice(i, i + 5) === '</em>') {
+        result += '</em>'; i += 5; continue;
+      }
+      // <strong> tag
+      if (html.slice(i, i + 8) === '<strong>') {
+        result += '<strong>'; i += 8; continue;
+      }
+      if (html.slice(i, i + 9) === '</strong>') {
+        result += '</strong>'; i += 9; continue;
+      }
+      // <br> tag
+      if (html.slice(i, i + 4) === '<br>') {
+        result += '<br>'; i += 4; continue;
+      }
+      // <br /> tag
+      if (html.slice(i, i + 5) === '<br/>') {
+        result += '<br>'; i += 5; continue;
+      }
+      if (html.slice(i, i + 6) === '<br />') {
+        result += '<br>'; i += 6; continue;
+      }
+      // Skip newlines
+      if (html[i] === '\n' || html[i] === '\r') { i++; continue; }
+      // Space
+      if (html[i] === ' ') {
+        result += '<span class="t-char space"> </span>';
+      } else {
+        result += `<span class="t-char">${html[i]}</span>`;
+      }
+      i++;
+    }
+    el.innerHTML = result;
+  }
+
+  // 2. Select all text elements and split them
+  const waterElements = [];
+
+  // Hero title — smaller radius, subtle
+  const heroTitle = document.getElementById('heroTitle');
+  splitIntoChars(heroTitle);
+  waterElements.push({ el: heroTitle, chars: heroTitle.querySelectorAll('.t-char'), radius: 110, maxShift: 6, maxBlur: 3 });
+
+  // All paragraphs
+  document.querySelectorAll('.section p, .section--elevated p').forEach(p => {
+    if (p.querySelectorAll('.t-char').length > 0) return; // already split
+    splitIntoChars(p);
+    waterElements.push({ el: p, chars: p.querySelectorAll('.t-char'), radius: 170, maxShift: 10, maxBlur: 6 });
+  });
+
+  // Quotes
+  document.querySelectorAll('.quote__text').forEach(q => {
+    splitIntoChars(q);
+    waterElements.push({ el: q, chars: q.querySelectorAll('.t-char'), radius: 150, maxShift: 8, maxBlur: 5 });
+  });
+
+  // Thesis text
+  document.querySelectorAll('.thesis__text').forEach(t => {
+    splitIntoChars(t);
+    waterElements.push({ el: t, chars: t.querySelectorAll('.t-char'), radius: 150, maxShift: 8, maxBlur: 5 });
+  });
+
+  // Emphasis blocks
+  document.querySelectorAll('.emphasis').forEach(e => {
+    splitIntoChars(e);
+    waterElements.push({ el: e, chars: e.querySelectorAll('.t-char'), radius: 140, maxShift: 7, maxBlur: 4 });
+  });
+
+  // h2, h3 headings
+  document.querySelectorAll('h2, h3').forEach(h => {
+    if (h.closest('.hero')) return; // skip hero title (already done)
+    splitIntoChars(h);
+    waterElements.push({ el: h, chars: h.querySelectorAll('.t-char'), radius: 170, maxShift: 10, maxBlur: 6 });
+  });
+
+  // 3. Build char data for all elements
+  const allChars = [];
+  waterElements.forEach(group => {
+    group.chars.forEach(ch => {
+      const rect = ch.getBoundingClientRect();
+      allChars.push({
+        el: ch,
+        group: group,
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2,
+        cx: 0, cy: 0, cb: 0, cs: 1, co: 1, // current
+        tx: 0, ty: 0, tb: 0, ts: 1, to: 1, // target
+      });
+    });
+  });
+
+  function remeasureAll() {
+    allChars.forEach(c => {
+      const rect = c.el.getBoundingClientRect();
+      c.x = rect.left + rect.width / 2;
+      c.y = rect.top + rect.height / 2;
+    });
+  }
+
+  // Initial measure after fonts
+  setTimeout(remeasureAll, 600);
+  window.addEventListener('resize', () => setTimeout(remeasureAll, 150));
+  window.addEventListener('scroll', () => setTimeout(remeasureAll, 80), { passive: true });
+
+  const LERP = 0.08;
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  // 4. Animation loop
+  function animateWater() {
+    for (let i = 0; i < allChars.length; i++) {
+      const c = allChars[i];
+      c.cx = lerp(c.cx, c.tx, LERP);
+      c.cy = lerp(c.cy, c.ty, LERP);
+      c.cb = lerp(c.cb, c.tb, LERP);
+      c.cs = lerp(c.cs, c.ts, LERP);
+
+      const tx = c.cx, ty = c.cy, bl = c.cb, sc = c.cs;
+      c.el.style.transform = `translate(${tx}px, ${ty}px) scale(${sc})`;
+      c.el.style.filter = bl > 0.2 ? `blur(${bl}px)` : 'none';
+    }
+    requestAnimationFrame(animateWater);
+  }
+  requestAnimationFrame(animateWater);
+
+  // 5. Mouse tracking — global, check all chars
+  let mouseX = -9999, mouseY = -9999;
+  let isMouseInPage = false;
+
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    isMouseInPage = true;
+
+    for (let i = 0; i < allChars.length; i++) {
+      const c = allChars[i];
+      const r = c.group.radius;
+
+      // Quick bounds check (skip if far away vertically)
+      if (Math.abs(mouseY - c.y) > r + 40) {
+        if (c.tx !== 0) { c.tx = 0; c.ty = 0; c.tb = 0; c.ts = 1; }
+        continue;
+      }
+
+      const dx = mouseX - c.x;
+      const dy = mouseY - c.y;
+      const distSq = dx * dx + dy * dy;
+      const rSq = r * r;
+
+      if (distSq < rSq) {
+        const dist = Math.sqrt(distSq);
+        const intensity = 1 - dist / r;
+        const ease = intensity * intensity * intensity; // cubic for tighter falloff
+
+        const angle = Math.atan2(dy, dx);
+        c.tx = -Math.cos(angle) * c.group.maxShift * ease;
+        c.ty = -Math.sin(angle) * c.group.maxShift * ease;
+        c.tb = c.group.maxBlur * ease;
+        c.ts = 1 + ease * 0.05;
+      } else {
+        if (c.tx !== 0 || c.ty !== 0) {
+          c.tx = 0; c.ty = 0; c.tb = 0; c.ts = 1;
+        }
+      }
+    }
+  });
+
+  document.addEventListener('mouseleave', () => {
+    isMouseInPage = false;
+    mouseX = -9999; mouseY = -9999;
+    allChars.forEach(c => { c.tx = 0; c.ty = 0; c.tb = 0; c.ts = 1; });
+  });
+});
+</script>
+</body>
+</html>
