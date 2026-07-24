@@ -1580,6 +1580,101 @@
       .editorial-media--final { min-height: 58dvh; }
     }
 
+    /* ─── SWISS GRID + ANTIQUA TYPOGRAPHY ─── */
+    .hero__title {
+      font-family: var(--serif);
+      font-size: clamp(66px, 10.5vw, 166px);
+      font-weight: 500;
+      line-height: .8;
+      letter-spacing: -.07em;
+    }
+    .hero__title em {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 400;
+      letter-spacing: -.065em;
+    }
+    .section__inner > h2 {
+      font-family: var(--serif);
+      font-weight: 500;
+      line-height: .9;
+      letter-spacing: -.06em;
+    }
+    h2 em {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 400;
+    }
+    .section__inner > h3 {
+      font-family: var(--serif);
+      font-weight: 500;
+      line-height: 1.02;
+      letter-spacing: -.045em;
+    }
+    .section__inner > p.lead,
+    .asym__text .lead {
+      font-family: var(--serif);
+      font-weight: 400;
+      line-height: 1.45;
+    }
+    .quote__text {
+      font-family: var(--serif);
+      font-weight: 400;
+      line-height: 1.18;
+      letter-spacing: -.035em;
+    }
+    .thesis__text {
+      font-family: var(--serif);
+      font-weight: 400;
+      line-height: 1.42;
+    }
+    .thinkers__intro p {
+      font-family: var(--serif);
+      font-weight: 500;
+      line-height: 1.02;
+      letter-spacing: -.05em;
+    }
+    .thinker__name {
+      font-family: var(--serif);
+      font-weight: 500;
+      line-height: 1;
+      letter-spacing: -.045em;
+    }
+    .pull-quote__inner {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 500;
+      line-height: 1.16;
+    }
+    .emphasis {
+      font-family: var(--serif);
+      font-weight: 500;
+      line-height: .92;
+      letter-spacing: -.065em;
+    }
+    .emphasis em {
+      font-family: var(--serif);
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    @media (max-width: 768px) {
+      .hero__title {
+        font-size: clamp(46px, 12.4vw, 58px);
+        line-height: .84;
+      }
+      .section__inner > h2 {
+        font-size: clamp(44px, 12.8vw, 62px);
+        line-height: .92;
+      }
+      .section__inner > h3 {
+        font-size: clamp(33px, 9.4vw, 45px);
+      }
+      .emphasis {
+        font-size: clamp(43px, 12.5vw, 60px);
+      }
+    }
+
     /* ─── REDUCED MOTION ─── */
     @media (prefers-reduced-motion: reduce) {
       .reveal, .reveal-left, .reveal-right, .reveal-scale { opacity: 1; transform: none; }
